@@ -1,0 +1,7 @@
+pandas
+psycopg2==2.9.9
+python-dotenv
+timescale-vector
+instructor
+anthropic
+ollama

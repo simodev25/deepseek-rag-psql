@@ -1,0 +1,8 @@
+pandas
+
+
+python-dotenv
+timescale-vector
+instructor
+anthropic
+ollama
