@@ -2,8 +2,6 @@
 
 This tutorial will guide you through setting up and using `pgvectorscale` with Docker and Python, leveraging OpenAI's powerful `text-embedding-3-small` model for embeddings. You'll learn to build a cutting-edge RAG (Retrieval-Augmented Generation) solution, combining advanced retrieval techniques (including hybrid search) with intelligent answer generation based on the retrieved context. Perfect for AI engineers looking to enhance their projects with state-of-the-art vector search and generation capabilities with the power of PostgreSQL.
 
-## YouTube Tutorial
-You can watch the full tutorial here on [YouTube](https://youtu.be/hAdEuDBN57g).
 
 ## Pgvectorscale Documentation
 
@@ -80,14 +78,34 @@ docker compose up -d
   - User: postgres
   - Password: password
   - Database: postgres
+    Installation of deepseek-coder
+
+To install and use deepseek-coder locally with Ollama:
+
+# Install Ollama (if not installed)
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+# Pull the deepseek-coder model
+```bash
+ollama pull deepseek-coder
+```
+Verify the installation:
+```bash
+ollama run deepseek-coder "Hello world"
+```
+If the installation is successful, you should see an appropriate response from the model.
+
 
 ### 3. Create a Python script to insert document chunks as vectors
 
-See `insert_vectors.py` for the implementation. This script uses OpenAI's `text-embedding-3-small` model to generate embeddings.
+See `insert_vectors.py` for the implementation. This script uses `deepseek-coder` model to generate embeddings.
 
 ### 4. Create a Python function to perform similarity search
 
-See `similarity_search.py` for the implementation. This script also uses OpenAI's `text-embedding-3-small` model for query embedding.
+See `similarity_search.py` for the implementation. This script also uses `deepseek-coder` model for query embedding.
 
 ## Usage
 
@@ -152,10 +170,6 @@ pip install psycopg2==2.9.9 --no-binary psycopg
 
 
 
-SELECT column_name, udt_name
-FROM information_schema.columns
-WHERE table_name = 'embeddings';
-Si embedding est encore en vector(2048), modifie-le :
 
-ALTER TABLE embeddings DROP COLUMN embedding;
-ALTER TABLE embeddings ADD COLUMN embedding vector(1999);
+## tnks YouTube Tutorial
+You can watch the full tutorial here on [YouTube](https://youtu.be/hAdEuDBN57g).

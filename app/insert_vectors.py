@@ -8,7 +8,7 @@ from timescale_vector.client import uuid_from_time
 vec = VectorStore()
 
 # Read the CSV file
-df = pd.read_csv("./data/faq_dataset.csv", sep=";")
+df = pd.read_csv("../data/faq_dataset.csv", sep=";")
 
 
 # Prepare data for insertion
