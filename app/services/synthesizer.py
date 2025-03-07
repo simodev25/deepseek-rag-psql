@@ -1,9 +1,21 @@
 from typing import List
 import pandas as pd
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
+import logging
+import json
+
 from services.llm_factory import LLMFactory
 
+import re
 
+def extract_json(response: str) -> str:
+    """
+    Extrait uniquement la partie JSON d'une réponse contenant du texte inutile avant et après.
+    """
+    match = re.search(r"\{.*\}", response, re.DOTALL)
+    if match:
+        return match.group(0).strip()  # Retourne seulement le JSON
+    return ""
 class SynthesizedResponse(BaseModel):
     thought_process: List[str] = Field(
         description="List of thoughts that the AI assistant had while synthesizing the answer"
@@ -19,7 +31,15 @@ class Synthesizer:
     # Role and Purpose
     You are an AI assistant for an e-commerce FAQ system. Your task is to synthesize a coherent and helpful answer 
     based on the given question and relevant context retrieved from a knowledge database.
-
+    
+    # Response Format:
+    You MUST return the response in a valid JSON format following this structure:
+    {
+      "thought_process": ["step 1", "step 2", "step 3"],
+      "answer": "Your final answer here",
+      "enough_context": true  # or false
+    }
+    
     # Guidelines:
     1. Provide a clear and concise answer to the question.
     2. Use only the information from the relevant context to support your answer.
@@ -29,9 +49,8 @@ class Synthesizer:
     6. If you cannot answer the question based on the given context, clearly state that.
     7. Maintain a helpful and professional tone appropriate for customer service.
     8. Adhere strictly to company guidelines and policies by using only the provided knowledge base.
-    
-    Review the question from the user:
     """
+
 
     @staticmethod
     def generate_response(question: str, context: pd.DataFrame) -> SynthesizedResponse:
@@ -57,16 +76,27 @@ class Synthesizer:
             },
         ]
 
-        llm = LLMFactory("openai")
-        return llm.create_completion(
-            response_model=SynthesizedResponse,
-            messages=messages,
-        )
+        llm = LLMFactory()
+        raw_response = llm.create_completion(response_model=None, messages=messages)
+
+        # 🛠️ Tentative de parsing en JSON pour s'adapter au modèle Pydantic
+        try:
+            cleaned_response = extract_json(raw_response)
+            json_response = json.loads(cleaned_response)  # Convertit la réponse en JSON
+            parsed_response = SynthesizedResponse.parse_obj(json_response)  # Vérifie la structure
+            return parsed_response
+        except (json.JSONDecodeError, ValidationError) as e:
+            logging.error(f"❌ Error parsing response: {e}")
+            return SynthesizedResponse(
+                thought_process=["Error processing response"],
+                answer="Je n'ai pas pu comprendre la réponse du modèle.",
+                enough_context=False
+            )
 
     @staticmethod
     def dataframe_to_json(
-        context: pd.DataFrame,
-        columns_to_keep: List[str],
+            context: pd.DataFrame,
+            columns_to_keep: List[str],
     ) -> str:
         """
         Convert the context DataFrame to a JSON string.

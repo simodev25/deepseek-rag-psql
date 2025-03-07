@@ -110,7 +110,7 @@ See `similarity_search.py` for the implementation. This script also uses `deepse
 ## Usage
 
 1. Create a copy of `example.env` and rename it to `.env`
-2. Open `.env` and fill in your OpenAI API key. Leave the database settings as is
+2. Open `.env` and fill in your Leave the database settings as is
 3. Run the Docker container
 4. Install the required Python packages using `pip install -r requirements.txt`
 5. Execute `insert_vectors.py` to populate the database

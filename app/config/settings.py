@@ -33,6 +33,16 @@ class OpenAISettings(LLMSettings):
     embedding_model: str = Field(default="text-embedding-3-small")
 
 
+class DeepSeekSettings(LLMSettings):
+    """DeepSeek-specific settings extending LLMSettings."""
+
+    base_url: str = Field(default_factory=lambda: os.getenv("DEEPSEEK_BASE_URL", "http://127.0.0.1:11434"))
+    api_key: Optional[str] = Field(default_factory=lambda: os.getenv("DEEPSEEK_API_KEY", ""))
+    default_model: str = Field(default="deepseek-r1:14b")
+    temperature: float = 0.7
+    max_retries: int = 3
+    max_tokens: int = 4096
+
 class DatabaseSettings(BaseModel):
     """Database connection settings."""
 
@@ -51,6 +61,7 @@ class Settings(BaseModel):
     """Main settings class combining all sub-settings."""
 
     openai: OpenAISettings = Field(default_factory=OpenAISettings)
+    deepseek: DeepSeekSettings = Field(default_factory=DeepSeekSettings)
     database: DatabaseSettings = Field(default_factory=DatabaseSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
 
