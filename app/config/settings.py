@@ -25,14 +25,6 @@ class LLMSettings(BaseModel):
     max_retries: int = 3
 
 
-class OpenAISettings(LLMSettings):
-    """OpenAI-specific settings extending LLMSettings."""
-
-    api_key: str = Field(default_factory=lambda: os.getenv("OPENAI_API_KEY"))
-    default_model: str = Field(default="gpt-4o")
-    embedding_model: str = Field(default="text-embedding-3-small")
-
-
 class DeepSeekSettings(LLMSettings):
     """DeepSeek-specific settings extending LLMSettings."""
 
@@ -59,8 +51,6 @@ class VectorStoreSettings(BaseModel):
 
 class Settings(BaseModel):
     """Main settings class combining all sub-settings."""
-
-    openai: OpenAISettings = Field(default_factory=OpenAISettings)
     deepseek: DeepSeekSettings = Field(default_factory=DeepSeekSettings)
     database: DatabaseSettings = Field(default_factory=DatabaseSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
