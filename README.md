@@ -160,13 +160,13 @@ When you get results from similarity_search:
 - Distances approaching 2 indicate opposite meanings (rare in practice).
 
 mac : 
-export PATH="/opt/homebrew/opt/postgresql/bin:$PATH"
-export LDFLAGS="-L/opt/homebrew/opt/postgresql/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/postgresql/include"
-pip install psycopg2==2.9.9 --no-binary psycopg
+- export PATH="/opt/homebrew/opt/postgresql/bin:$PATH"
+- export LDFLAGS="-L/opt/homebrew/opt/postgresql/lib"
+- export CPPFLAGS="-I/opt/homebrew/opt/postgresql/include"
+- pip install psycopg2==2.9.9 --no-binary psycopg
 
-CREATE EXTENSION IF NOT EXISTS vector;
-CREATE EXTENSION IF NOT EXISTS vectorscale CASCADE;
+- CREATE EXTENSION IF NOT EXISTS vector;
+- CREATE EXTENSION IF NOT EXISTS vectorscale CASCADE;
 
 
 ## tnks YouTube Tutorial
