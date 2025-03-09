@@ -51,5 +51,5 @@ records_df = df.apply(prepare_record, axis=1)
 
 # Create tables and insert data
 vec.create_tables()
-vec.create_index()  # DiskAnnIndex
+vec.create_index()  # HNSWIndex
 vec.upsert(records_df)

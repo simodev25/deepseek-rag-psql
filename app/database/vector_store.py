@@ -17,7 +17,6 @@ class VectorStore:
         self.settings = get_settings()
         self.embedding_model = "deepseek-coder"  # Modèle local Ollama
         self.vector_settings = self.settings.vector_store
-        print(self.settings.database.service_url)
         self.vec_client = client.Sync(
             self.settings.database.service_url,
             self.vector_settings.table_name,

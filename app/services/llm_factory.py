@@ -46,7 +46,6 @@ class LLMFactory:
         )
 
         # Extraire la réponse texte brute
-        print(response)
         if "message" in response:
             raw_text = response["message"]["content"]
         else:
