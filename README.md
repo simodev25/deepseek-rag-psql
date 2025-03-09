@@ -159,10 +159,7 @@ When you get results from similarity_search:
 - Distances around 1 suggest little to no similarity.
 - Distances approaching 2 indicate opposite meanings (rare in practice).
 
-lsof -i :5432
-kill -9 15618 15938
-python3.12 -m venv env_app
-source env_app/bin/activate
+mac : 
 export PATH="/opt/homebrew/opt/postgresql/bin:$PATH"
 export LDFLAGS="-L/opt/homebrew/opt/postgresql/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/postgresql/include"
